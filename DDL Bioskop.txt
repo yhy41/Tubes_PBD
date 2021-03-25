@@ -1,0 +1,77 @@
+CREATE TABLE FILM
+  (
+    id_film  VARCHAR2 (10) NOT NULL ,
+    judul    VARCHAR2 (50) ,
+    durasi   VARCHAR2 (10) ,
+    tahun    NUMBER ,
+    sinopsis VARCHAR2 (2000)
+  ) ;
+ALTER TABLE FILM ADD CONSTRAINT Film_PK PRIMARY KEY ( id_film ) ;
+
+CREATE TABLE TEATER
+  (
+    nomor_teater VARCHAR2 (10) NOT NULL ,
+    kelas        VARCHAR2 (10) ,
+    harga        NUMBER ,
+    kapasitas    NUMBER
+  ) ;
+ALTER TABLE TEATER ADD CONSTRAINT Teater_PK PRIMARY KEY ( nomor_teater ) ;
+
+CREATE TABLE JadwalTayang
+  (
+    id_jadwalTayang VARCHAR2 (10) NOT NULL ,
+    id_film         VARCHAR2 (10) NOT NULL ,
+    nomor_teater    VARCHAR2 (10) NOT NULL ,
+    periode_start   DATE ,
+    periode_end     DATE
+  ) ;
+ALTER TABLE JadwalTayang ADD CONSTRAINT JadwalTayang_PK PRIMARY KEY ( id_jadwalTayang ) ;
+
+
+CREATE TABLE Kursi
+  (
+    no_inventori VARCHAR2 (5) NOT NULL ,
+    nomor_teater VARCHAR2 (10) NOT NULL,
+	no_kursi     VARCHAR2 (5)
+  ) ;
+ALTER TABLE Kursi ADD CONSTRAINT Kursi_PK PRIMARY KEY ( no_inventori ) ;
+
+
+CREATE TABLE Member
+  (
+    id_member   VARCHAR2 (10) NOT NULL ,
+    nama_member VARCHAR2 (30) ,
+    no_hp       VARCHAR2 (13) ,
+    email       VARCHAR2 (50) ,
+    tgl_lahir   DATE
+  ) ;
+ALTER TABLE Member ADD CONSTRAINT Member_PK PRIMARY KEY ( id_member ) ;
+
+
+CREATE TABLE Orderfilm
+  (
+    id_order        VARCHAR2 (10) NOT NULL ,
+    id_member       VARCHAR2 (10) NOT NULL ,
+    id_jadwalTayang VARCHAR2 (10) NOT NULL ,
+    no_inventori    VARCHAR2 (5) NOT NULL ,
+    tanggal         DATE ,
+    status          VARCHAR2 (10)
+  ) ;
+ALTER TABLE Orderfilm ADD CONSTRAINT Order_PK PRIMARY KEY ( id_order ) ;
+
+
+
+
+
+ALTER TABLE JadwalTayang ADD CONSTRAINT JadwalTayang_Film_FK FOREIGN KEY ( id_film ) REFERENCES Film ( id_film ) ;
+
+ALTER TABLE JadwalTayang ADD CONSTRAINT JadwalTayang_Teater_FK FOREIGN KEY ( nomor_teater ) REFERENCES Teater ( nomor_teater ) ;
+
+ALTER TABLE Kursi ADD CONSTRAINT Kursi_Teater_FK FOREIGN KEY ( nomor_teater ) REFERENCES Teater ( nomor_teater ) ;
+
+ALTER TABLE Orderfilm ADD CONSTRAINT Order_JadwalTayang_FK FOREIGN KEY ( id_jadwalTayang ) REFERENCES JadwalTayang ( id_jadwalTayang ) ;
+
+ALTER TABLE Orderfilm ADD CONSTRAINT Order_Kursi_FK FOREIGN KEY ( no_inventori ) REFERENCES Kursi ( no_inventori ) ;
+
+ALTER TABLE Orderfilm ADD CONSTRAINT Order_Member_FK FOREIGN KEY ( id_member ) REFERENCES Member ( id_member ) ;
+
